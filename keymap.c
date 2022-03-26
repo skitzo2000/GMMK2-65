@@ -17,15 +17,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //Skitzo200's QMK custom keymap.c for the GMMK 2 65%  qmk compile -kb gmmk/gmmk2/p65/ansi -km skitzo2000
 
 #include QMK_KEYBOARD_H
+#include "glorious_sides.h"
 
 enum custom_keycodes {
-    TECHOPS = SAFE_RANGE,
-    PRNTSCREEN,
+    PRNTSCREEN = SAFE_RANGE,
     NAME,
     GOOD_MORNING,
     HAPPY_MONDAY,
     HAPPY_FRIDAY,
-    POWERMUTE,
 };
 
 //  Skitzo2000's Custom Colors
@@ -43,24 +42,10 @@ enum custom_keycodes {
 //  Skitzo2000's custom keys
 #define TO_KEYS           BLUE_RGB
 
-// Side LED Arrays
-int side1[] = {69,70,71,72,73,74,75,76,77,78};
-int side2[] = {79,80,81,82,83,84,85,86,87,88};
-
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
-    case TECHOPS:
-        if (record->event.pressed) {
-            // when keycode TECHOPS is pressed
-            SEND_STRING("~/.ssh/techops_shared.pem");
-        } else {
-
-        }
-        break;
-
     case PRNTSCREEN:
         if (record->event.pressed) {
-            // when keycode PRNTSCREEN is pressed
             SEND_STRING(SS_RGUI(SS_RSFT("s")));
         } else {
 
@@ -68,7 +53,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         break;
     case NAME:
         if (record->event.pressed) {
-            // when keycode PRNTSCREEN is pressed
             SEND_STRING("Paul Norton");
         } else {
 
@@ -76,7 +60,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         break;
     case GOOD_MORNING:
         if (record->event.pressed) {
-            // when keycode PRNTSCREEN is pressed
             SEND_STRING("Good Morning, ");
         } else {
 
@@ -84,7 +67,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         break;
     case HAPPY_MONDAY:
         if (record->event.pressed) {
-            // when keycode PRNTSCREEN is pressed
             SEND_STRING("Happy Monday, ");
         } else {
 
@@ -92,16 +74,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         break;
     case HAPPY_FRIDAY:
         if (record->event.pressed) {
-            // when keycode PRNTSCREEN is pressed
             SEND_STRING("Happy Friday, ");
-        } else {
-
-        }
-        break;
-    case POWERMUTE:
-        if (record->event.pressed) {
-            //POWERMUTE
-            SEND_STRING(SS_RGUI(SS_RSFT("a")));
         } else {
 
         }
@@ -184,7 +157,7 @@ uint32_t layer_state_set_user(uint32_t state) {
 }
 
 // RGB LED layout for GMMK 2 65%
-// By skitzo2000
+// By Skitzo2000
 // led number, function of the key
 
 //  0,  Esc         1,  1       2,  2       3,  3       4,  4   5,  5   6,  6   7,  7   8,  8       9,  9       10, 0       11, -          12, =      13, Backspace   14, Del
@@ -193,27 +166,20 @@ uint32_t layer_state_set_user(uint32_t state) {
 //  44, Shift_L     45, Z       46, X       47, C       48, V       49, B   50, N       51, M       52, ,       53, .       54, /   55, Shift_R    56, Up     57, END
 //  58, Ctrl_L      59, Win_L   60, Alt_L   61, Space   62, Alt_R   63, FN  64, Left    65, Down    66, Right
 
-//  69, LED 1
-//  70, LED 2
-//  71, LED 3
-//  72, LED 4
-//  73, LED 5
-//  74, LED 6
-//  75, LED 7
-//  76, LED 8
-//  77, LED 9
-//  78, LED 10
+//  Side LEDs
 
-//  79, LED 11
-//  80, LED 12
-//  81, LED 13
-//  82, LED 14
-//  83, LED 15
-//  84, LED 16
-//  85, LED 17
-//  86, LED 18
-//  87, LED 19
-//  88, LED 20
+//  Right Side          Left Side
+//  67, LED 1           77, LED 11
+//  68, LED 2           78, LED 12
+//  69, LED 3           79, LED 13
+//  70, LED 4           80, LED 14
+//  71, LED 5           81, LED 15
+//  72, LED 6           82, LED 16
+//  73, LED 7           83, LED 17
+//  74, LED 8           84, LED 18
+//  75, LED 9           85, LED 19
+//  76, LED 10          86, LED 20
+
 
 void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 
@@ -224,12 +190,8 @@ void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     switch(get_highest_layer(layer_state)){  // special handling per layer
         case 0:  //Layer 0
         case 1:  //layer 1
-            for(int i = 0; i > sizeof side1; i++ ){
-                rgb_matrix_set_color(side1[i], RGB_RED);
-            }
-            for(int j = 0; j > sizeof side2; j++ ){
-                rgb_matrix_set_color(side2[j], RGB_BLUE);
-            }
+            set_glorious_side('l', DARKORANGE_RGB);
+            set_glorious_side('r', DARKBLUE_RGB);
             break;
         case 2:  //layer 2
             break;
